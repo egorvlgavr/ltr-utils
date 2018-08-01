@@ -2,36 +2,17 @@ import argparse
 import json
 from enum import Enum
 import matplotlib.pyplot as plt
-
-HEADER_PAIRS_SPLITTER = "="
-RANK_INDEX = -1
-
-
-class ClickStreamRow:
-    def __init__(self, line, header):
-        cols = line.split(",")
-        self.phrase = cols[0]
-        self.product = cols[1]
-        self.impr = int(cols[2])
-        self.clicks = int(cols[3])
-        self.add_to_cart = int(cols[4])
-        self.col_by_name = {}
-        col_names = header.split(",")
-        for i in range(len(cols)):
-            self.col_by_name[col_names[i]] = cols[i]
-
-    def get(self, name):
-        return self.col_by_name[name]
+from model import clickstream, trainingset
 
 
 def show_click_stream_histogram(path, config):
     min_impression = config['filters']['min_impression']
     column_name = config['histogram']['column']
     with open(path) as fp:
-        header = next(fp)  # skip header
+        header = next(fp)  # get header
         grouped = {}
         for line in fp:
-            row = ClickStreamRow(line, header)
+            row = clickstream.ClickStreamRow(line, header)
             if row.impr > min_impression:
                 if row.phrase in grouped:
                     grouped_value = grouped[row.phrase]
@@ -55,43 +36,15 @@ def plot_hist(values, config, name):
     plt.show()
 
 
-class TrainingSetRow:
-    def __init__(self, line, header):
-        self.cols_dict = {}
-        cols = line.split(" ")
-        rank = cols[0]
-        self.cols_dict[RANK_INDEX] = rank
-        for i in range(2, len(cols)):
-            pair = cols[i]
-            num, feature_value = pair.split(":")
-            self.cols_dict[num] = feature_value
-        self.col_by_name = {"rank": RANK_INDEX}
-        hs = header.replace("#", "").split(",")
-        for header_pairs in hs:
-            num, feature_name = header_pairs.split(HEADER_PAIRS_SPLITTER)
-            self.col_by_name[feature_name] = num
-
-    def get(self, name):
-        return self.cols_dict[self.col_by_name[name]]
-
-
 def show_training_set_histogram(path, config):
     column_name = config['histogram']['column']
     with open(path) as fp:
         hist_values = []
-        header = normalize_header(next(fp))  # get header
+        header = trainingset.normalize_header(next(fp))  # get header
         for line in fp:
-            row = TrainingSetRow(normalize_line(line), header)
+            row = trainingset.TrainingSetRow(trainingset.normalize_line(line), header)
             hist_values.append(float(row.get(column_name)))
         plot_hist(hist_values, config, column_name)
-
-
-def normalize_header(line):
-    return line.rpartition("#")[2].strip().replace("\n", "")
-
-
-def normalize_line(line):
-    return line.rpartition("#")[0].strip()
 
 
 def show_statistics(path):
@@ -101,7 +54,7 @@ def show_statistics(path):
         cnt = 0
         zero_clicks = 0
         for line in fp:
-            row = ClickStreamRow(line, header)
+            row = clickstream.ClickStreamRow(line, header)
             if row.phrase in grouped:
                 grouped[row.phrase] += 1
             else:
@@ -127,7 +80,7 @@ def create_queries_file(path, config):
         grouped = {}
         filtered_by_min_impression = 0
         for line in fp:
-            row = ClickStreamRow(line, header)
+            row = clickstream.ClickStreamRow(line, header)
             if row.impr > min_impression:
                 if row.phrase in grouped:
                     grouped[row.phrase] += 1
@@ -150,7 +103,7 @@ def create_queries_file(path, config):
 
 
 def main(opts):
-    path = 'clicks.csv'
+    path = '/data-example/clicks.csv'
     with open('config.json') as json_data_file:
         data = json.load(json_data_file)
         action = opts.action
@@ -163,7 +116,7 @@ def main(opts):
             if hist_source == 'click_stream':
                 show_click_stream_histogram(path, data)
             elif hist_source == 'training_set':
-                show_training_set_histogram('training_set.txt', data)
+                show_training_set_histogram('/data-example/training_set.txt', data)
             else:
                 print('Unsupported histogram source={}'.format(hist_source))
         else:
@@ -177,6 +130,7 @@ class Mode(Enum):
 
     def __str__(self):
         return self.value
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
