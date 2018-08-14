@@ -3,6 +3,7 @@ import json
 from enum import Enum
 import matplotlib.pyplot as plt
 from model import clickstream, trainingset
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def show_click_stream_histogram(path, config):
@@ -102,23 +103,75 @@ def create_queries_file(path, config):
             print('Total queries after min product filter={}'.format(cnt))
 
 
+def show_scatter_2d_plot(path, config):
+    with open(path) as fp:
+        header = trainingset.normalize_header(next(fp))
+        x_key = config['scatter']['x_axis']
+        y_key = config['scatter']['y_axis']
+        y_data = []
+        x_data = []
+        for line in fp:
+            row = trainingset.TrainingSetRow(trainingset.normalize_line(line), header)
+            x_data.append(float(row.get(x_key)))
+            y_data.append(float(row.get(y_key)))
+        plt.plot(x_data, y_data, '.', label='observation')
+        plt.xlabel(x_key)
+        plt.ylabel(y_key)
+        plt.legend()
+        plt.show()
+
+
+def show_scatter_3d_plot(path, config):
+    with open(path) as fp:
+        header = trainingset.normalize_header(next(fp))
+        x_key = config['scatter']['x_axis']
+        y_key = config['scatter']['y_axis']
+        z_key = config['scatter']['z_axis']
+        y_data = []
+        x_data = []
+        z_data = []
+        for line in fp:
+            row = trainingset.TrainingSetRow(trainingset.normalize_line(line), header)
+            x_data.append(float(row.get(x_key)))
+            y_data.append(float(row.get(y_key)))
+            z_data.append(float(row.get(z_key)))
+
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+        ax.scatter(x_data, y_data, z_data, label='observations')
+        ax.set_xlabel(x_key)
+        ax.set_ylabel(y_key)
+        ax.set_zlabel(z_key)
+        ax.legend()
+        plt.show()
+
+
 def main(opts):
-    path = '/data-example/clicks.csv'
+    clickstream_path = 'data-example/clicks.csv'
+    training_set_path = 'data-example/training_set.txt'
     with open('config.json') as json_data_file:
         data = json.load(json_data_file)
         action = opts.action
         if action is Mode.statistic:
-            show_statistics(path)
+            show_statistics(clickstream_path)
         elif action is Mode.queries:
-            create_queries_file(path, data)
+            create_queries_file(clickstream_path, data)
         elif action is Mode.histogram:
             hist_source = data['histogram']['source']
             if hist_source == 'click_stream':
-                show_click_stream_histogram(path, data)
+                show_click_stream_histogram(clickstream_path, data)
             elif hist_source == 'training_set':
-                show_training_set_histogram('/data-example/training_set.txt', data)
+                show_training_set_histogram(training_set_path, data)
             else:
                 print('Unsupported histogram source={}'.format(hist_source))
+        elif action is Mode.scatter:
+            scatted_plot_type = data['scatter']['type']
+            if scatted_plot_type == '2d':
+                show_scatter_2d_plot(training_set_path, data)
+            elif scatted_plot_type == '3d':
+                show_scatter_3d_plot(training_set_path, data)
+            else:
+                print('Unsupported scatter type={}'.format(scatted_plot_type))
         else:
             print('Unsupported action={}'.format(opts))
 
@@ -127,6 +180,7 @@ class Mode(Enum):
     statistic = 'statistic'
     queries = 'queries'
     histogram = 'histogram'
+    scatter = 'scatter'
 
     def __str__(self):
         return self.value

@@ -7,6 +7,7 @@ There are several available modes:
  * Statistic
  * Queries
  * Histogram
+ * Scatter plot
 ##### Statistic
 Apply only for click stream.
 Print number of query - product pairs, number of unique queries, max/min/avg products per query, products with zero clicks
@@ -16,6 +17,9 @@ Write in file all unique queries that was filtered by several filters. Filters a
 ##### Histogram
 Apply for click stream and training set. Source can be changed in settings.
 Show histogram of click stream/training set column data. 
+##### Scatter plot
+Apply only for training set.
+Show 2d or 3d scatter plot of training set column data. 
 ### indexer.py
 Index training set to Solr. Use separate core for that.
 It's expected that core will be create by **bin\solr** script with default configs so Managed schema will be enabled.

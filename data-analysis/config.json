@@ -16,5 +16,10 @@
     "core_name": "trainingset",
     "server": "localhost:8983",
     "batch_size": 10000
+  },
+  "scatter" : {
+    "type": "2d",
+    "x_axis": "bm25_score",
+    "y_axis": "rank"
   }
 }

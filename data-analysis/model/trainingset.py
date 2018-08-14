@@ -1,4 +1,4 @@
-HEADER_PAIRS_SPLITTER = '='
+HEADER_PAIRS_SPLITTER = "->"
 
 
 class TrainingSetRow:
@@ -28,7 +28,7 @@ class TrainingSetRow:
             pair = cols[i]
             num, feature_value = pair.split(":")
             feature_values_to_num[num] = feature_value
-        num_to_names_list = header.replace("#", "").split(",")
+        num_to_names_list = header.replace("#", "").split(" ")
         # dict key is name value is feature value
         # header is used to resolve it
         self.features = {}
