@@ -1,6 +1,10 @@
 import json
 import requests
-from model import trainingset
+from model import trainingset, clickstream
+
+
+CLICK_STREAM_FILE = 'data-example/clicks_v2.csv'
+TRAINING_SET_FILE = 'data-example/training_set_v2.txt'
 
 
 def get_solr_url(server, core):
@@ -19,19 +23,41 @@ def index_docs(docs, solr_url):
         response.raise_for_status()
 
 
+def read_click_data_dict(path):
+    with open(path) as fp:
+        print("Building click data dictionary Started.")
+        cs_header = clickstream.normalise_cs_line(next(fp))  # get header
+        result = {}
+        for cs_line in fp:
+            cs_row = clickstream.ClickStreamRow.new_v2_row(clickstream.normalise_cs_line(cs_line), cs_header)
+            result[cs_row.get_qd_pair()] = cs_row.get_clicks_data_as_dict()
+        print("Building click data dictionary finished.")
+        print('Total dict size {}'.format(len(result)))
+        return result
+
+
 if __name__ == "__main__":
     with open('config.json') as json_data_file:
         config = json.load(json_data_file)
         url = get_solr_url(config['indexing']['server'], config['indexing']['core_name'])
         batch_size = config['indexing']['batch_size']
-        with open('data-example/training_set.txt') as training_set_file:
+
+        with open(TRAINING_SET_FILE) as training_set_file:
+            click_data_dict = read_click_data_dict(CLICK_STREAM_FILE)
             header = trainingset.normalize_header(next(training_set_file))
             docs_batch = []
             indexed = 0
             batch_num = 0
             for line in training_set_file:
                 row = trainingset.TrainingSetRow(trainingset.normalize_line(line), header)
-                docs_batch.append(row.get_as_dict())
+                doc_for_index = row.get_as_dict()
+                qd_key = row.get_qd_pair()
+                if qd_key in click_data_dict:
+                    doc_for_index.update(click_data_dict[qd_key])
+                else:
+                    print('Not joined by key for={}'.format(qd_key))
+                    continue
+                docs_batch.append(doc_for_index)
                 indexed += 1
                 if len(docs_batch) >= batch_size:
                     index_docs(docs_batch, url)

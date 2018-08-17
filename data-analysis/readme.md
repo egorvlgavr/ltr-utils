@@ -21,7 +21,7 @@ Show histogram of click stream/training set column data.
 Apply only for training set.
 Show 2d or 3d scatter plot of training set column data. 
 ### indexer.py
-Index training set to Solr. Use separate core for that.
+Index training set and click stream data to Solr. Use separate core for that.
 It's expected that core will be create by **bin\solr** script with default configs so Managed schema will be enabled.
 For initializing of fields use **add-fields.sh**. Other useful scripts is placed in **solr-scripts** folder.
 ## Information

@@ -1,3 +1,5 @@
+from model import qdpair
+
 HEADER_PAIRS_SPLITTER = "->"
 
 
@@ -51,6 +53,9 @@ class TrainingSetRow:
         }
         result.update(self.features)
         return result
+
+    def get_qd_pair(self):
+        return qdpair.QueryDocumentPair(self.query, self.product_id)
 
 
 def normalize_header(line):
