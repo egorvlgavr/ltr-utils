@@ -7,8 +7,8 @@ class TestTrainingSetRow(TestCase):
 
     def setUp(self):
         super().setUp()
-        header = '#0=on_sale,1=bm25_score'
-        line = '2 qid:0 0:0 1:4.1 #red jeans=1120'
+        header = '#0->on_sale 1->bm25_score'
+        line = '2 qid:0 0:0 1:4.1 #red jeans->1120'
         self.test_row = trainingset.TrainingSetRow(line, header)
 
     def test_row_creation(self):
