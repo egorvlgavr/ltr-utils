@@ -1,10 +1,10 @@
-"Search_Term","PPID_Clicked","Total_Times_Clicked","Total_Times_AddToBag","Total_Times_Checked_Out","Total_Search_Count"
-"red jeans","pp1110","1",,,"1"
-"red jeans","pp1120","2",,,"0"
-"red jeans","pp1130","4",,,"2"
-"red jeans","pp1150","2",,,"1"
-"blue jeans","pp1140","900",,,"0"
-"blue jeans","pp1150","900",,,"1"
-"green jeans","pp1110","20",,,"10"
-"green jeans","pp1130","20",,,"1"
-"green jeans","pp1120","20",,,"2"
+Search_Term,PPID_Clicked,Total_Search_Count,Total_Times_Clicked,Total_Times_AddToBag,Total_Times_Checked_Out
+red jeans,1110,200,1,0,0
+red jeans,1120,100,2,0,0
+red jeans,1130,500,4,2,2
+red jeans,1150,900,2,0,0
+blue jeans,1140,900,0,0,0
+blue jeans,1150,900,1,0,1
+green jeans,1110,20,10,0,0
+green jeans,1130,20,10,1,1
+green jeans,1120,20,10,1,2

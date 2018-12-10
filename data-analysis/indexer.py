@@ -29,8 +29,11 @@ def read_click_data_dict(path):
         cs_header = clickstream.normalise_cs_line(next(fp))  # get header
         result = {}
         for cs_line in fp:
-            cs_row = clickstream.ClickStreamRow.new_v2_row(clickstream.normalise_cs_line(cs_line), cs_header)
-            result[cs_row.get_qd_pair()] = cs_row.get_clicks_data_as_dict()
+            try:
+                cs_row = clickstream.ClickStreamRow.new_v2_row(clickstream.normalise_cs_line(cs_line), cs_header)
+                result[cs_row.get_qd_pair()] = cs_row.get_clicks_data_as_dict()
+            except ValueError:
+                print("Skip incorrect line.")
         print("Building click data dictionary finished.")
         print('Total dict size {}'.format(len(result)))
         return result

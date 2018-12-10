@@ -7,6 +7,7 @@ def safely_parse_int(value):
     else:
         return int(value)
 
+
 # TODO(test)
 class ClickStreamRow:
     """
@@ -22,6 +23,9 @@ class ClickStreamRow:
         self.checked_out = safely_parse_int(cols[order[5]])
         self.col_by_name = {}
         col_names = header.split(",")
+        if len(cols) != len(col_names):
+            print('Invalid split length. cols={} col_names={}'.format(cols, col_names))
+            raise ValueError
         for i in range(len(cols)):
             self.col_by_name[col_names[i]] = cols[i]
 
@@ -41,10 +45,10 @@ class ClickStreamRow:
 
     def get_clicks_data_as_dict(self):
         return {
-            'search_count': self.impr,
-            'clicked': self.clicks,
-            'add_to_bag': self.add_to_cart,
-            'checked_out': self.checked_out
+            'search_count_value': self.impr,
+            'clicked_value': self.clicks,
+            'add_to_bag_value': self.add_to_cart,
+            'checked_out_value': self.checked_out
         }
 
 

@@ -147,8 +147,8 @@ def show_scatter_3d_plot(path, config):
 
 
 def main(opts):
-    clickstream_path = 'data-example/clicks.csv'
-    training_set_path = 'data-example/training_set.txt'
+    clickstream_path = 'data-example/clicks_v2.csv'
+    training_set_path = 'data-example/training_set_v2.txt'
     with open('config.json') as json_data_file:
         data = json.load(json_data_file)
         action = opts.action

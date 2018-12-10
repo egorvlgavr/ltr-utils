@@ -21,28 +21,12 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
      "name":"product_id",
      "type":"string"
    },
-   "add-field":{
-     "name":"on_sale",
+   "add-dynamic-field":{
+     "name":"*_feature",
      "type":"float"
    },
-   "add-field":{
-     "name":"bm25_score",
-     "type":"float"
-   }
-   "add-field":{
-     "name":"search_count",
-     "type":"int"
-   },
-   "add-field":{
-     "name":"clicked",
-     "type":"int"
-   },
-   "add-field":{
-     "name":"add_to_bag",
-     "type":"int"
-   },
-     "add-field":{
-     "name":"checked_out",
+   "add-dynamic-field":{
+     "name":"*_value",
      "type":"int"
    }
 }' http://localhost:8983/solr/trainingset/schema

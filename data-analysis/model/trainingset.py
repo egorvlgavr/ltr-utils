@@ -1,5 +1,7 @@
 from model import qdpair
 
+FEATURE_DYNAMIC_FIELD = "_feature"
+
 HEADER_PAIRS_SPLITTER = "->"
 
 
@@ -51,7 +53,8 @@ class TrainingSetRow:
             'query': self.query,
             'rank': self.rank
         }
-        result.update(self.features)
+        for k, v in self.features.items():
+            result[k + FEATURE_DYNAMIC_FIELD] = v
         return result
 
     def get_qd_pair(self):
