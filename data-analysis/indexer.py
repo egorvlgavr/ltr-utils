@@ -3,10 +3,6 @@ import requests
 from model import trainingset, clickstream
 
 
-CLICK_STREAM_FILE = 'data-example/clicks_v2.csv'
-TRAINING_SET_FILE = 'data-example/training_set_v2.txt'
-
-
 def get_solr_url(server, core):
     return 'http://' + server + '/solr/' + core + '/update'
 
@@ -44,9 +40,11 @@ if __name__ == "__main__":
         config = json.load(json_data_file)
         url = get_solr_url(config['indexing']['server'], config['indexing']['core_name'])
         batch_size = config['indexing']['batch_size']
+        click_stream_file_path = config['file']['click_stream']
+        training_set_file_path = config['file']['training_set']
 
-        with open(TRAINING_SET_FILE) as training_set_file:
-            click_data_dict = read_click_data_dict(CLICK_STREAM_FILE)
+        with open(training_set_file_path) as training_set_file:
+            click_data_dict = read_click_data_dict(click_stream_file_path)
             header = trainingset.normalize_header(next(training_set_file))
             docs_batch = []
             indexed = 0

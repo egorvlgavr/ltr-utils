@@ -147,29 +147,29 @@ def show_scatter_3d_plot(path, config):
 
 
 def main(opts):
-    clickstream_path = 'data-example/clicks_v2.csv'
-    training_set_path = 'data-example/training_set_v2.txt'
     with open('config.json') as json_data_file:
-        data = json.load(json_data_file)
+        config = json.load(json_data_file)
         action = opts.action
+        click_stream_file = config['file']['click_stream']
+        training_set_file = config['file']['training_set']
         if action is Mode.statistic:
-            show_statistics(clickstream_path)
+            show_statistics(click_stream_file)
         elif action is Mode.queries:
-            create_queries_file(clickstream_path, data)
+            create_queries_file(click_stream_file, config)
         elif action is Mode.histogram:
-            hist_source = data['histogram']['source']
+            hist_source = config['histogram']['source']
             if hist_source == 'click_stream':
-                show_click_stream_histogram(clickstream_path, data)
+                show_click_stream_histogram(click_stream_file, config)
             elif hist_source == 'training_set':
-                show_training_set_histogram(training_set_path, data)
+                show_training_set_histogram(training_set_file, config)
             else:
                 print('Unsupported histogram source={}'.format(hist_source))
         elif action is Mode.scatter:
-            scatted_plot_type = data['scatter']['type']
+            scatted_plot_type = config['scatter']['type']
             if scatted_plot_type == '2d':
-                show_scatter_2d_plot(training_set_path, data)
+                show_scatter_2d_plot(training_set_file, config)
             elif scatted_plot_type == '3d':
-                show_scatter_3d_plot(training_set_path, data)
+                show_scatter_3d_plot(training_set_file, config)
             else:
                 print('Unsupported scatter type={}'.format(scatted_plot_type))
         else:

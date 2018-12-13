@@ -19,7 +19,12 @@
   },
   "scatter" : {
     "type": "2d",
-    "x_axis": "bm25_score",
+    "x_axis": "queryScore",
     "y_axis": "rank"
+  },
+  "file" :{
+    "training_set": "data-example/training_set_v2.txt",
+    "click_stream": "data-example/clicks_v2.csv",
+    "ltr_model": ""
   }
 }
