@@ -3,7 +3,9 @@ import requests
 from model import trainingset, clickstream
 
 
-def get_solr_url(server, core):
+def get_solr_url(conf):
+    server = conf['indexing']['server']
+    core = conf['indexing']['core_name']
     return 'http://' + server + '/solr/' + core + '/update'
 
 
@@ -38,7 +40,7 @@ def read_click_data_dict(path):
 if __name__ == "__main__":
     with open('config.json') as json_data_file:
         config = json.load(json_data_file)
-        url = get_solr_url(config['indexing']['server'], config['indexing']['core_name'])
+        url = get_solr_url(config)
         batch_size = config['indexing']['batch_size']
         click_stream_file_path = config['file']['click_stream']
         training_set_file_path = config['file']['training_set']

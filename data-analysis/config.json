@@ -22,9 +22,13 @@
     "x_axis": "queryScore",
     "y_axis": "rank"
   },
+  "model": {
+    "report_file": "model_analysis_report.txt",
+    "data_provider": "solr"
+  },
   "file" :{
-    "training_set": "data-example/training_set_v2.txt",
-    "click_stream": "data-example/clicks_v2.csv",
-    "ltr_model": ""
+    "training_set": "example/training_set_v2.txt",
+    "click_stream": "example/clicks_v2.csv",
+    "ltr_model": "example/model_presentation-10_12_18.json"
   }
 }

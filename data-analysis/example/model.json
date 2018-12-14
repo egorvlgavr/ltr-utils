@@ -1,0 +1,71 @@
+{
+  "store": "modelStore",
+  "name": "treesModel",
+  "class": "org.apache.solr.ltr.model.MultipleAdditiveTreesModel",
+  "features": [
+    {
+      "name": "bm25_score"
+    },
+    {
+      "name": "on_sale"
+    }
+  ],
+  "params": {
+    "trees": [
+      {
+        "weight": "0.1",
+        "root": {
+          "feature": "bm25_score",
+          "threshold": "4.6456",
+          "left": {
+            "value": "-0.4023"
+          },
+          "right": {
+            "feature": "on_sale",
+            "threshold": "1.0",
+            "left": {
+              "value": "1.6689"
+            },
+            "right": {
+              "feature": "bm25_score",
+              "threshold": "2.43",
+              "left": {
+                "value": "1.9090"
+              },
+              "right": {
+                "value": "1.9777"
+              }
+            }
+          }
+        }
+      },
+      {
+        "weight": "0.1",
+        "root": {
+          "feature": "bm25_score",
+          "threshold": "-7.0",
+          "left": {
+            "value": "-0.4023"
+          },
+          "right": {
+            "feature": "on_sale",
+            "threshold": "1.0",
+            "left": {
+              "value": "1.6689"
+            },
+            "right": {
+              "feature": "bm25_score",
+              "threshold": "2.113",
+              "left": {
+                "value": "1.9090"
+              },
+              "right": {
+                "value": "1.9777"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
