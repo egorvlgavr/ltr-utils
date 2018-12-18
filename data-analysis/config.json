@@ -23,12 +23,15 @@
     "y_axis": "rank"
   },
   "model": {
-    "report_file": "model_analysis_report.txt",
-    "data_provider": "solr"
+    "report_file": "model_report.txt",
+    "data_provider": "solr",
+    "view": {
+      "tree_num": "0"
+    }
   },
   "file" :{
     "training_set": "example/training_set_v2.txt",
     "click_stream": "example/clicks_v2.csv",
-    "ltr_model": "example/model_presentation-10_12_18.json"
+    "ltr_model": "example/model.json"
   }
 }

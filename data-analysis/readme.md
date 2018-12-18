@@ -19,6 +19,9 @@ For initializing of fields use **add-fields.sh**. Other useful scripts is placed
 ### analyse_model.py
 Write in file all splits that presented in model. Calculate for each split GINI importance.
 Support tree based model in **Solr** format.
+### view_model.py
+Write dot format file and show one tree from the model. Tree index is defined in settings. Calculate for each split GINI importance.
+Support tree based model in **Solr** format.
 ## Information
 This program is written on *Python 3.5*.
-It use **matplotlib**, **requests**. 
+It use **matplotlib**, **requests**,**graphviz** 
