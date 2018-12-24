@@ -24,8 +24,8 @@ class TestTrainingSetRow(TestCase):
 
     def test_row_asDict(self):
         row_dict = {
-            'on_sale': '0',
-            'bm25_score': '4.1',
+            'on_sale_feature': '0',
+            'bm25_score_feature': '4.1',
             'rank': 2,
             'query': 'red jeans',
             'product_id': '1120',
